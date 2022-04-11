@@ -500,15 +500,15 @@ id="最近刚和同学入手了一个树莓派在此开一个博客记录一下�
 <p>对应不同的显示器需要在树莓派里安装不同的驱动，官网下载的树莓派系统里默认安装的是传统HDMI显示器。</p>
 <p>如果想要在别的屏幕上显示，例如7寸显示屏，则需要安装7寸显示屏的驱动，可以使用系统用户命令行安装</p>
 <ul>
-<li><p>获取LCD驱动 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs awk">git clone https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/goodtft/</span>LCD-show.git<br>chmod -R <span class="hljs-number">755</span> LCD-show<br>cd LCD-show/<br></code></pre></td></tr></table></figure></p></li>
-<li><p>安装LCD驱动 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">若要使用7寸C款1024*600则对应执行：<br>sudo <span class="hljs-string">./LCD7C-show</span><br>若要切换回传统的HDMI显示器则对应执行：<br>sudo <span class="hljs-string">./LCD-hdmi</span><br></code></pre></td></tr></table></figure>
+<li><p>获取LCD驱动 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">git clone https://github.com/goodtft/LCD-show.git<br>chmod -R 755 LCD-show<br>cd LCD-show/<br></code></pre></td></tr></table></figure></p></li>
+<li><p>安装LCD驱动 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">若要使用7寸C款1024*600则对应执行：<br>sudo ./LCD7C-show<br>若要切换回传统的HDMI显示器则对应执行：<br>sudo ./LCD-hdmi<br></code></pre></td></tr></table></figure>
 若用上述命令切换显示，则执行完命令之后就无法在当前屏幕上显示，只需切换到命令指定的显示器执行即可。</p></li>
 </ul>
 <p>也可用树莓派的SPI接口的屏幕，驱动与传统HDMI驱动相同</p>
 <h1 id="python环境">2.python环境</h1>
 <p>我这里是在<a
 target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">https://www.raspberrypi.org/downloads/</a>树莓派官方安装界面烧录的系统，首先先看看树莓派系统有没有自己装python：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pi</span>@raspberrypi:~ $ python<br><span class="hljs-attribute">Python</span> <span class="hljs-number">3</span>.<span class="hljs-number">9</span>.<span class="hljs-number">2</span> (default, Mar <span class="hljs-number">12</span> <span class="hljs-number">2021</span> <span class="hljs-number">04</span>:<span class="hljs-number">06</span>:<span class="hljs-number">34</span>)<span class="hljs-meta"></span><br><span class="hljs-meta">[GCC 10.2.1 20210110] on linux</span><br><span class="hljs-meta">Type &quot;&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">pi@raspberrypi:~ $ python<br>Python 3.9.2 (default, Mar 12 2021 04:06:34)<br>[GCC 10.2.1 20210110] on linux<br>Type &quot;&quot;<br></code></pre></td></tr></table></figure>
 <p>很好，发现树莓派安装的最新系统自带了python 3.9.2
 ,那么接下来再看看有没有配套的pip</p>
 
@@ -764,6 +764,8 @@ target="_blank" rel="noopener" href="https://www.raspberrypi.org/downloads/">htt
         
         
     
+        
+        
         
         
         
