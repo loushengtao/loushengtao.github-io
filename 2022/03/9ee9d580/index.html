@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <!-- title -->
+
+
+    
+
+<!-- keywords -->
+
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Levite.Lou">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Levite.Lou">
+    
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content="">
+    <meta name="description" content="1.JPEG概述 JPEG是Joint Photographic Experts Group的缩写，即ISO和IEC联合图像专家组，负责静态图像压缩标准的指定，这个专家组开发的算法就被称为JPEG算法，并且已经成为大家通用的标准，即JPEG标准。JPEG压缩是有损压缩,但这个损失的部分是人的视觉不容易察觉到的部分，他充分利用了人眼对计算机色彩中高频信息不敏感的特点，来大大节省了需要处理的数据信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JPEG图片压缩原理">
+<meta property="og:url" content="https://loushengtao.github.io/2022/03/9ee9d580/index.html">
+<meta property="og:site_name" content="1st&#39;s stdio">
+<meta property="og:description" content="1.JPEG概述 JPEG是Joint Photographic Experts Group的缩写，即ISO和IEC联合图像专家组，负责静态图像压缩标准的指定，这个专家组开发的算法就被称为JPEG算法，并且已经成为大家通用的标准，即JPEG标准。JPEG压缩是有损压缩,但这个损失的部分是人的视觉不容易察觉到的部分，他充分利用了人眼对计算机色彩中高频信息不敏感的特点，来大大节省了需要处理的数据信">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理1.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理2.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理3.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理4.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理5.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理6.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理8.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理9.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理7.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/图像编码基础2.png">
+<meta property="article:published_time" content="2022-03-10T02:46:00.000Z">
+<meta property="article:modified_time" content="2022-03-15T08:16:53.491Z">
+<meta property="article:author" content="Levite.Lou">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://loushengtao.github.io/assets/BlogPic/JPEG图片压缩原理1.png">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    
+    <title>JPEG图片压缩原理 · 1st&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
+
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
+
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20211217" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="/css/dark.css?v=20211217" as="style">
+    <link rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" href="/css/mobile.css?v=20211217" media="(max-width: 960px)">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js?v=20211217" as="script">
+    <link rel="preload" href="/scripts/dark.js?v=20211217" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <link href="https://cdn.bootcss.com/KaTeX/0.7.1/katex.min.css" rel="stylesheet">
+    <!-- algolia -->
+    
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+<meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="1st's stdio" type="application/atom+xml">
+</head>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+    
+        <body class="post-body">
+    
+        <!-- header -->
+        <header class="header header-mobile">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
+    </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        
+            <div class="header-sidebar-menu">
+        
+            
+                <div style="padding-left: 1px;">&#xe775;</div>
+            
+        </div>
+    </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href=/>1st's Studio.</a>
+        </span>
+    </div>
+    <!-- toggle banner for post layout -->
+    
+        
+            <div class="banner">
+        
+            <div class="blog-title header-element">
+                <a href="/">1st&#39;s Studio.</a>
+            </div>
+            <div class="post-title header-element">
+                <a href="#" class="post-name">JPEG图片压缩原理</a>
+            </div>
+        </div>
+    
+</header>
+
+        <!-- fixed footer -->
+        <footer class="footer-fixed">
+    <!-- back to top button -->
+    <div class="footer-fixed-element">
+        
+            <div class="back-top back-top-hidden">
+        
+        
+            <div>&#xe639;</div>
+        
+        </div>
+    </div>
+</footer>
+
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="
+
+
+
+
+
+
+
+    height:50vh;
+
+">
+    
+    <!-- 主页  -->
+    
+        
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+                JPEG图片压缩原理
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+                
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页 meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.9k</span>阅读时长: <span class="post-count reading-time">11 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <!-- 撰写日期 -->
+                    <span class="iconfont-archer post-intro-calander">&#xe676;</span>
+                    <span class="post-intro-time">2022/03/10</span>
+                    <!-- busuanzi -->
+                    
+                        <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                            <span class="iconfont-archer post-intro-busuanzi">&#xe602;</span>
+                            <span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    
+                    <!-- 文章分享 -->
+                    <span class="share-wrapper">
+                        <span class="iconfont-archer share-icon">&#xe71d;</span>
+                        <span class="share-text">Share</span>
+                        <ul class="share-list">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+            <div class="container container-unloaded">
+                <main class="main post-page">
+    <article class="article-entry">
+        <h1 id="jpeg概述">1.JPEG概述</h1>
+<p>JPEG是Joint Photographic Experts
+Group的缩写，即ISO和IEC联合图像专家组，负责静态图像压缩标准的指定，这个专家组开发的算法就被称为JPEG算法，并且已经成为大家通用的标准，即JPEG标准。JPEG压缩是有损压缩,但这个损失的部分是人的视觉不容易察觉到的部分，<strong>他充分利用了人眼对计算机色彩中高频信息不敏感的特点</strong>，来大大节省了需要处理的数据信息。</p>
+<h2 id="去除视觉上的多余信息">1.1 去除视觉上的多余信息</h2>
+<p>由于人眼的视觉生理特性，人眼对不同频率成分有不同的敏感度</p>
+<ul>
+<li>如人眼含有对亮度敏感的柱状细胞1.8亿个，含有对色彩敏感的椎状细胞0.08亿个。故眼睛对亮度的敏感程度要大于对色彩的敏感程度。</li>
+</ul>
+<p>总体而言，一个原始图像信息，要对其进行JPEG编码，过程分两大步：</p>
+<ul>
+<li><ol type="1">
+<li>去除视觉上的多余信息，即空间冗余度</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>去除数据本身的多余信息，即结构(静态)冗余度</li>
+</ol></li>
+</ul>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理1.png"></p>
+<p>如上图，除了表示图像像素的位置水平X轴和垂直Y轴以外，还有一个表示色彩值的Z轴。Z代表了三元色各个分支R/G/B的混合时所占的具体数值大小，每个像素的RGB的混合值可能都不同，但是临近的两个点的R/G/B三个值会比较接近。</p>
+<h2 id="去除数据本身的多余信息">1.2 去除数据本身的多余信息</h2>
+<p>利用Huffman编码，来将最后的数据用无损的方式做压缩，这个是纯数学上的处理方式。</p>
+<h2 id="图像信号的频谱特性">1.3 图像信号的频谱特性</h2>
+<p>不同的颜色对应着不同的频率，图像信号的频谱线一般在0-6MHz范围内，而且一幅图像内，包含了各种频率的分量。但是包含的大多数为低频频谱线，只在占图像区域比例很低的图像边缘信号中才含有高频谱线。——<strong>这是JPEG对图像压缩的理论依据</strong></p>
+<p>具体的做法即使为：在对图像做数字处理时，可根据频谱因素分配比特数：对包含信息量大的低频谱区域分配较多的比特数，对包含信息量少的高频谱区域分配较低的比特数，而图像质量并没有可察觉的损伤，以达到数据压缩的目的。</p>
+<h2 id="总体来说上面的几步即是">总体来说，上面的几步即是：</h2>
+<p>如果处理的是彩色图像，JPEG算法首先将RGB分量转化成亮度分量和色差分量，同时丢失一般的色彩信息(空间分辨率减半)。然后，用DCT来进行块变换编码，舍弃高频的系数，并对余下的系数进行量化以进一步减少数据量。最后，使用RLE行程编码和Huffman编码来完成压缩任务</p>
+<h1 id="jpeg原理详解">2.JPEG原理详解</h1>
+<p>下面将更加详细地介绍这两步中的各个细节。</p>
+<p>JPEG编码中主要涉及到的内容主要包括：</p>
+<ul>
+<li><ol type="1">
+<li>Color Model Conversion(色彩模型)</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li>DCT(Discrete Cosine Transform 离散余弦变换)</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li>重排列DCT结果</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li>量化</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li>RLE编码</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li>范式Huffman编码</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li>DC的编码</li>
+</ol></li>
+</ul>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理2.png"></p>
+<h2 id="色彩空间-color-space">2.1 色彩空间 color space</h2>
+<p>在图像处理中，为了利用人的视角特性，从而降低数据量，通常把RGB空间表示的彩色图像变换到其他色彩空间。</p>
+<p>现在采用的色彩空间有三种：YI1，YUV，YCrCb</p>
+<p>每一种色彩空间都产生了一种亮度分量信号和两种色度分量信号，而每一种变换使用的参数都是为了适应某种类型的显示设备</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理3.png"></p>
+<h2 id="色彩深度-color-depth">2.2 色彩深度 color depth</h2>
+<p>一幅图像是由很多个像素点组成的，存储每个像素点所用的位数叫做像素深度。对不同的图片，这个值是可以有所不同的，从而会使得图片的数据有多和少的区别。</p>
+<p>一幅彩色图像的每个像素用RGB三个分量表示，那么一个像素共用3*8=24位表示，就说像素的深度24bit，每个像素可以是2的24次方种颜色种的一种。表示一个像素的位数越多，它能表达的颜色数目就越多。</p>
+<h2 id="离散余弦变换dct">2.3 离散余弦变换DCT</h2>
+<p>将图像从色彩域转换到频率域，常用的变换方法有：</p>
+<ul>
+<li>傅氏变换</li>
+<li>Walsh-Hadamard沃尔什哈达码变换</li>
+<li>正弦变换</li>
+<li>余弦变换——应用最广</li>
+<li>斜变换</li>
+<li>哈尔变换</li>
+<li>K-L变换</li>
+</ul>
+<h3 id="离散余弦变换预备知识">2.3.1 离散余弦变换预备知识</h3>
+<p>二维傅里叶可分离变换可用通用的关系式来表示</p>
+<p><span
+class="math display">\[F(u,v)=\sum_{x=0}^{M-1}f(x,y)g(x,y,u,v)\]</span></p>
+<p><span
+class="math display">\[f(x,y)=\sum_{u=0}^{M-1}\sum_{v=0}^{N-1}F(u,v)h(x,y,u,v)\]</span></p>
+<p>式中：<span
+class="math inline">\(x,u=0,1,2,...,M-1;y,v=0,1,2,...,N-1;\)</span>g(x,y,u,v)和h(x,y,u,v)分别称为正向变换核和反向变换核</p>
+<p>如果满足：</p>
+<p><span
+class="math display">\[g(x,y,u,v)=g_{1}(x,u)g_{2}(y,v)\]</span></p>
+<p><span
+class="math display">\[h(x,y,u,v)=h_{1}(x,u)h_{2}(y,v)\]</span></p>
+<p>则称正、反变换核是可分离的，进一步，如果<span
+class="math inline">\(g_{1}\)</span>和<span
+class="math inline">\(g_{2}\)</span>，<span
+class="math inline">\(h_{1}\)</span>和<span
+class="math inline">\(h_{2}\)</span>在函数形式上一样，则称该变换核是对称的</p>
+<p><strong>图像变换的矩阵表示</strong></p>
+<p>数字图像都是实数矩阵，设<span
+class="math inline">\(f(x,y)\)</span>为MxN的图像灰度矩阵，通常为了分析、推导方便，可将可分离变换写成矩阵的形式：</p>
+<p><span class="math display">\[F=P\cdot f\cdot Q\]</span></p>
+<p><span class="math display">\[f=P^{-1}FQ^{-1}\]</span></p>
+<p>其中，F、f是二维矩阵<span class="math inline">\(M\times
+N\)</span>的矩阵；P是<span class="math inline">\(N\cdot
+N\)</span>的矩阵。</p>
+<p><span
+class="math display">\[F(u,v)=\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}P(x,u)f(x,y)Q(y,v)\]</span></p>
+<p>式中，u=0,1,2,...,M-1，v=0,1,2,...,N-1</p>
+<p>对于二维离散傅里叶变换，则有：</p>
+<p><span class="math display">\[P(x,u)=g_{1}(x,u)=e^{\frac{-j2\pi
+ux}{M}}\]</span></p>
+<p><span class="math display">\[D(y,u)=g_{2}(y,u)=e^{\frac{-j2\pi
+vy}{N}}\]</span></p>
+<h3 id="离散余弦变换数学原理">2.3.2 离散余弦变换数学原理</h3>
+<p>离散余弦变换（Discrete Cosine
+Transform，DCT）是可分离的变换，其变换核为余弦函数。DCT除了具有一般的正交变换性质外，
+它的变换阵的基向量能很好地描述人类语音信号和图像信号的相关特征。因此，在对语音信号、图像信号的变换中，DCT变换被认为是一种准最佳变换。</p>
+<p><strong>一维离散余弦变换定义</strong></p>
+<p><span
+class="math display">\[g(x,u)=C(u)\sqrt{\frac{2}{N}}cos\frac{(2x+1)u\pi}{2N}\]</span></p>
+<p>一维DCT定义如下：设{f(x)|x=0,1,...,N-1}为离散的信号列</p>
+<p><span
+class="math display">\[F(u)=C(u)\sqrt{\frac{2}{N}}\sum_{x=0}^{N-1}f(x)cos\frac{(2x+1)u\pi}{2N}\]</span></p>
+<p><strong>二维离散余弦变换</strong></p>
+<p>二维DCT正变换核为：</p>
+<p><span
+class="math display">\[g(x,y,u,v)=\frac{2}{\sqrt{MN}}C(u)C(v)cos\frac{(2x+1)u\pi}{2M}cos\frac{(2y+1)v\pi}{2N}\]</span></p>
+<p>式子中，x,u=0,1,2,...,M-1;y,v=0,1,2,...,N-1</p>
+<p>二维DCT定义如下：</p>
+<p>设f(x,y)为MxN的数字图像矩阵，则：</p>
+<p><span
+class="math display">\[F(u,v)=\frac{2}{\sqrt{MN}}\sum_{x=0}^{M-1}\sum_{y=0}^{N-1}f(x,y)C(u)C(v)cos\frac{(2x+1)u\pi}{2M}cos\frac{(2y+1)v\pi}{2N}\]</span></p>
+<p>式中：x,u=0,1,2,...,M-1;y,v=0,1,2,...,N-1</p>
+<p>综上，DCT变换的公式为：</p>
+<p><span
+class="math display">\[F(u,v)=\frac{1}{4}C(u)C(v)[\sum_{i=0}^{7}\sum_{j=0}^{7}f(i,j)cos\frac{(2i+1)u\pi}{16}cos\frac{(2j+1)v\pi}{16}]\]</span></p>
+<p>f(i,j)经DCT变换之后，F(0,0)是直流系数，其他为交流系数。</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理4.png"></p>
+<p>上图为8x8的原始图像，将原始图像推移128，使其范围变为-128~127</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理5.png"></p>
+<p>使用离散余弦变换，并四舍五入取最接近的整数</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理6.png"></p>
+<p>经过以上操作，取样块便从时间域转化成了频率域的系数块。</p>
+<p><strong>DCT将原始图像信息块转换成不同频率分量的系数集，有两个优点</strong></p>
+<ul>
+<li>信号常将其能力大部分集中于频率域的一个小范围内，这样一来，描述不重要的分量只需要很少的比特数。</li>
+<li>频率域分解映射了人类视觉系统的处理过程，并允许后继的量化过程满足其灵敏度的要求。</li>
+</ul>
+<h2 id="量化">2.4 量化</h2>
+<p>量化过程实际上就是对DCT系数的一个优化过程。它是利用了人眼对高频部分不敏感的特性来实现数据的大幅简化。量化为整个过程中主要的有损运算。</p>
+<ul>
+<li>量化过程实际上是简单地把频率领域上每个成分，除以一个对于该成分的常数，且接着四舍五入取最接近的整数。</li>
+</ul>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理8.png"></p>
+<p>因为人眼对亮度信号比对色差信号更敏感，因此使用了两种量化表：亮度量化值和色差量化值</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理9.png"></p>
+<p>使用量化矩阵以及前面所得到的DCT系数矩阵，可以结合DC系数四舍五入得到最接近的整数</p>
+<p><span
+class="math display">\[取整(\frac{-415}{16})=取整(-25.9375)=-26\]</span></p>
+<p>总体而言，DCT变换实际上是空间域的<strong>低通滤波器</strong>——对Y分量采用细量化，对UV分量采用粗量化</p>
+<h2 id="z字编排">2.5 Z字编排</h2>
+<p>量化后的数据有很大一个特点，即是直流分量相对于交流分量来说要大，而且交流分量中含有大量的0。</p>
+<p><img src="\assets\BlogPic\JPEG图片压缩原理7.png"></p>
+<p>此时边可采用"Z"字形编排的方法，通过"Z"字编排，数据在交流分量的维度上会出现很多0值连续的状况。在"Z"字形编排的基础上结合行程编码，将会很大程度上降低了编码的大小。</p>
+<h2 id="行程编码">2.6行程编码</h2>
+<p>行程编码(Run Length
+Coding)又称为"运行长度编码"或"游程编码"，它是一种无所压缩编码。</p>
+<p>例如：5555557777733322221111111</p>
+<p>这一串数据的一个特点是相同的内容会出现很多次，那么我们就可以用一种简化的方法来记录这一串数字，如：</p>
+<p>(5,6) (7,5) (3,3) (3,4) (1,7)</p>
+<h2 id="范式-huffman编码">2.7范式 Huffman编码</h2>
+<p>范式Huffman编码(Canonical Huffman
+Code)是一个按数据出现的概率进行编码的一种编码方式，很多流行的压缩方法都使用了范式哈夫曼便阿门技术，如GZIB、ZLIB、PNG、JPEG、MPEG等等。</p>
+<p>压缩原理与下图类似：</p>
+<p><img src="/assets/BlogPic/图像编码基础2.png"></p>
+<h1 id="jpeg文件存储格式">3.JPEG文件存储格式</h1>
+<p>通常我们保存的文件名后缀为jpg，但按标准来说，它是一种JFIF格式标准的文件，里面的图像压缩方式是JPEG。</p>
+<p><code>JFIF是一个文件格式标准，JPEG是一个压缩标准，不是一个概念</code></p>
+<p>JFIF是File Interchange
+Format的缩写，也即JPRG文件交换格式。JFIF是一个图片文件格式标准，它是一种使用JPEG图像压缩技术存储摄影图像的方法。JFIF代表了一种"通用语言"文件格式，它是专门为方便用户在不同的计算机和应用程序见传输JPEG图像而色痕迹的语言</p>
+<p>JFIF文件格式定义中的一些内容是JPEG压缩标准未定义的，如resolution/aspect
+ratio，color space等</p>
+<p>参考资料：</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0d0361fca2ab">JPEG
+图片压缩原理（一）</a></p>
+<p>[2] <a
+target="_blank" rel="noopener" href="https://blog.csdn.net/baidu_38172402/article/details/105272324?ops_request_misc">离散余弦变换原理及实现</a></p>
+<p>[3] <a
+href="https://loushengtao.github.io/2022/03/f60ce146/">图像编码基础</a></p>
+
+    </article>
+    <!-- license -->
+    
+    <!-- paginator -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href="/2022/03/cfa63db/" title="深度学习常用计算公式">
+                    <div class="nextTitle">深度学习常用计算公式</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href="/2022/03/2678189e/" title="NRF24L01详解">
+                    <div class="prevTitle">NRF24L01详解</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- comment -->
+    
+        <div class="post-comment">
+            <!-- 来必力 City 版安装代码 -->
+
+
+            
+
+            
+
+            
+
+            <!-- utteranc评论 -->
+
+
+            <!-- partial('_partial/comment/changyan') -->
+            <!--PC版-->
+
+
+            
+            
+
+            
+
+        </div>
+    
+    <!-- timeliness note -->
+    <!-- idea from: https://hexo.fluid-dev.com/posts/hexo-injector/#%E6%96%87%E7%AB%A0%E6%97%B6%E6%95%88%E6%80%A7%E6%8F%90%E7%A4%BA -->
+    
+    <!-- Mathjax -->
+    
+</main>
+
+                <!-- profile -->
+                
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+        <div class="social">
+            
+    
+        
+            
+                <a href="mailto:2294464422@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="https://github.com/loushengtao" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                    
+                    <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+
+        </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    
+    <!-- 不蒜子  -->
+    
+        <div class="busuanzi-container">
+            
+             
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+            
+        </div>
+    	
+</footer>
+
+        </div>
+        <!-- toc -->
+        
+            <div class="toc-wrapper toc-wrapper-loding" style=
+
+
+
+
+
+
+
+    top:50vh;
+
+>
+                <div class="toc-catalog">
+                    <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+                </div>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#jpeg%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">1.JPEG概述</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E8%A7%86%E8%A7%89%E4%B8%8A%E7%9A%84%E5%A4%9A%E4%BD%99%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 去除视觉上的多余信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%BB%E9%99%A4%E6%95%B0%E6%8D%AE%E6%9C%AC%E8%BA%AB%E7%9A%84%E5%A4%9A%E4%BD%99%E4%BF%A1%E6%81%AF"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 去除数据本身的多余信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%83%8F%E4%BF%A1%E5%8F%B7%E7%9A%84%E9%A2%91%E8%B0%B1%E7%89%B9%E6%80%A7"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 图像信号的频谱特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%9D%A5%E8%AF%B4%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%87%A0%E6%AD%A5%E5%8D%B3%E6%98%AF"><span class="toc-number">1.4.</span> <span class="toc-text">总体来说，上面的几步即是：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jpeg%E5%8E%9F%E7%90%86%E8%AF%A6%E8%A7%A3"><span class="toc-number">2.</span> <span class="toc-text">2.JPEG原理详解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4-color-space"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 色彩空间 color space</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%89%B2%E5%BD%A9%E6%B7%B1%E5%BA%A6-color-depth"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 色彩深度 color depth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2dct"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 离散余弦变换DCT</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86"><span class="toc-number">2.3.1.</span> <span class="toc-text">2.3.1 离散余弦变换预备知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E6%95%A3%E4%BD%99%E5%BC%A6%E5%8F%98%E6%8D%A2%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.3.2 离散余弦变换数学原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E5%8C%96"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 量化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#z%E5%AD%97%E7%BC%96%E6%8E%92"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 Z字编排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%8C%E7%A8%8B%E7%BC%96%E7%A0%81"><span class="toc-number">2.6.</span> <span class="toc-text">2.6行程编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8C%83%E5%BC%8F-huffman%E7%BC%96%E7%A0%81"><span class="toc-number">2.7.</span> <span class="toc-text">2.7范式 Huffman编码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#jpeg%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">3.JPEG文件存储格式</span></a></li></ol>
+            </div>
+        
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 16
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+        
+            
+            
+            <div class="archive-year"> 2022 </div>
+            <ul class="year-list">
+            
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/07</span>
+            <a class="archive-post-title" href="/2022/04/73edeb87/">Pytorch推理相关</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/31</span>
+            <a class="archive-post-title" href="/2022/03/df0945ec/">树莓派视觉小车项目</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/29</span>
+            <a class="archive-post-title" href="/2022/03/27a8e7c6/">蓝牙模块通信</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/29</span>
+            <a class="archive-post-title" href="/2022/03/95dd147c/">AboutConvolution</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/22</span>
+            <a class="archive-post-title" href="/2022/03/140ab620/">树莓派</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/21</span>
+            <a class="archive-post-title" href="/2022/03/b17e5bc4/">论文写作技巧</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/21</span>
+            <a class="archive-post-title" href="/2022/03/9409a7cc/">超分论文1-DeepLearningForSingleImage</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/14</span>
+            <a class="archive-post-title" href="/2022/03/cfa63db/">深度学习常用计算公式</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/10</span>
+            <a class="archive-post-title" href="/2022/03/9ee9d580/">JPEG图片压缩原理</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/07</span>
+            <a class="archive-post-title" href="/2022/03/2678189e/">NRF24L01详解</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/04</span>
+            <a class="archive-post-title" href="/2022/03/f679549b/">LateX</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/04</span>
+            <a class="archive-post-title" href="/2022/03/f60ce146/">图像编码基础</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/03</span>
+            <a class="archive-post-title" href="/2022/03/5033dc9b/">MarkdownBasis</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/03</span>
+            <a class="archive-post-title" href="/2022/03/769b363c/">STM32-API</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/03</span>
+            <a class="archive-post-title" href="/2022/03/a810a1d/">HEVC</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/02</span>
+            <a class="archive-post-title" href="/2022/03/a84987e1/">HEXO相关操作</a>
+        </li>
+    
+    </div>
+</div>
+
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+        
+            <span class="sidebar-tag-name" data-tags="Markdown">
+                <span class="iconfont-archer">&#xe606;</span>
+                Markdown
+            </span>
+        
+            <span class="sidebar-tag-name" data-tags="论文">
+                <span class="iconfont-archer">&#xe606;</span>
+                论文
+            </span>
+        
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="科研">
+            <span class="iconfont-archer">&#xe60a;</span>
+            科研
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="STM32">
+            <span class="iconfont-archer">&#xe60a;</span>
+            STM32
+        </span>
+    
+        <span class="sidebar-category-name" data-categories="AI与编码">
+            <span class="iconfont-archer">&#xe60a;</span>
+            AI与编码
+        </span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "https://loushengtao.github.io",
+        root: siteMetaRoot,
+        author: "Levite.Lou"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+    <!-- Check browser compatibility of CSS variables -->
+    <script>
+        if (browserSupportCSSVariables === undefined) {
+            var browserSupportCSSVariables = window.CSS && window.CSS.supports && window.CSS.supports('--a', 0);
+        }
+    </script>
+    <script>
+        if (browserSupportCSSVariables) {
+            var customFontName = 'Noto Sans SC:n3,n4,n5,n7'
+            var customFontUrl = 'https://fonts.googleapis.cnpmjs.org/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;display=swap'
+            if (!customFontName) {
+                console.log('Custom font name is not set or read failed');
+            }
+            if (!customFontUrl) {
+                console.log('Custom font url is not set or read failed');
+            }
+        } else {
+            console.error('Current browser doesn\'t support custom font.')
+        }
+    </script>
+    <script src="/scripts/customFontLoader.js?v=20211217" defer></script>
+
+
+        <!-- main func -->
+        <script src="/scripts/main.js?v=20211217"></script>
+        <!-- dark mode -->
+        <script src="/scripts/dark.js?v=20211217"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" defer></script>
+        <!-- algolia -->
+        
+        <!-- busuanzi -->
+        
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        
+        <!-- CNZZ -->
+        
+        <!-- async load share.js -->
+        
+            <script src="/scripts/share.js?v=20211217" async></script>
+        
+        <!-- mermaid -->
+        
+            <script src='https://cdn.jsdelivr.net/npm/mermaid@8.11.0/dist/mermaid.min.js'></script>
+            <script>
+                if (window.mermaid) {
+                    mermaid.initialize({theme: 'dark'});
+                }
+            </script>
+        
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+</body>
+</html>
