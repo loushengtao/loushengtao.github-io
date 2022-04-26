@@ -19,28 +19,24 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="1.SPI简介 1.1 SPI的通信协议 SPI(Serial Peripheral Interface)，顾名思义就是串行外围设备接口，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。 SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对">
+    <meta name="description" content="hljs.initHighlightingOnLoad();   近段时间在Github上git了很多超分代码，绞尽脑汁也无法推理，于是就想挑一份代码详细研究一下他的架构，话不多说，开干！  整体架构 超分代码大多存在于src文件夹中，首先我们先来看看代码的大致结构:  可以看出，代码被包装成三个子部分以及main函数部分。  main函数部分 data文">
 <meta property="og:type" content="article">
-<meta property="og:title" content="STM32-API">
-<meta property="og:url" content="https://loushengtao.github.io/2022/03/769b363c/index.html">
+<meta property="og:title" content="超分代码详解">
+<meta property="og:url" content="https://loushengtao.github.io/2022/04/72babca7/index.html">
 <meta property="og:site_name" content="1st&#39;s stdio">
-<meta property="og:description" content="1.SPI简介 1.1 SPI的通信协议 SPI(Serial Peripheral Interface)，顾名思义就是串行外围设备接口，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。 SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对">
+<meta property="og:description" content="hljs.initHighlightingOnLoad();   近段时间在Github上git了很多超分代码，绞尽脑汁也无法推理，于是就想挑一份代码详细研究一下他的架构，话不多说，开干！  整体架构 超分代码大多存在于src文件夹中，首先我们先来看看代码的大致结构:  可以看出，代码被包装成三个子部分以及main函数部分。  main函数部分 data文">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API4.jpg">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API1.png">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API2.jpg">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API3.gif">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API5.png">
-<meta property="article:published_time" content="2022-03-03T07:24:30.000Z">
-<meta property="article:modified_time" content="2022-03-22T02:50:38.142Z">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/超分代码详解1.png">
+<meta property="article:published_time" content="2022-04-24T02:10:13.000Z">
+<meta property="article:modified_time" content="2022-04-24T07:35:02.420Z">
 <meta property="article:author" content="Levite.Lou">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API4.jpg">
+<meta name="twitter:image" content="https://loushengtao.github.io/assets/BlogPic/超分代码详解1.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>STM32-API · 1st&#39;s Studio</title>
+    <title>超分代码详解 · 1st&#39;s Studio</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -267,7 +263,7 @@
                 <a href="/">1st&#39;s Studio.</a>
             </div>
             <div class="post-title header-element">
-                <a href="#" class="post-name">STM32-API</a>
+                <a href="#" class="post-name">超分代码详解</a>
             </div>
         </div>
     
@@ -313,7 +309,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-                STM32-API
+                超分代码详解
             <!-- 404 -->
             
         </h1>
@@ -332,13 +328,13 @@
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.7k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">871</span>阅读时长: <span class="post-count reading-time">4 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2022/03/03</span>
+                    <span class="post-intro-time">2022/04/24</span>
                     <!-- busuanzi -->
                     
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
@@ -493,91 +489,33 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <h1 id="spi简介">1.SPI简介</h1>
-<h2 id="spi的通信协议">1.1 SPI的通信协议</h2>
-<p>SPI(Serial Peripheral
-Interface)，<strong>顾名思义就是串行外围设备接口</strong>，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。</p>
-<p>SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对Slave设备进行片选(Slave
-Select)来控制多个Slave设备，SPI协议还规定Slave设备的Clodck由Master设备通过SCK管教提供给Slave设备，Slave设备本身不能产生或控制Clock，没有Clock则Slave设备不能正常工作</p>
-<h2 id="基本工作原理概述">1.2 基本工作原理概述</h2>
-<p>SPI接口一般由4根线组成，单向传输时3根线也可以。这四根线也是所有基于SPI的设备共有的，它们是SDI(数据输入)、SDO(数据输出)、SCLK(时钟)、CS(片选)。</p>
+        <p><link href="https://cdn.bootcss.com/highlight.js/8.0/styles/brown_paper.min.css" rel="stylesheet"></p>
+<script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+<blockquote>
+<p>近段时间在Github上git了很多超分代码，绞尽脑汁也无法推理，于是就想挑一份代码详细研究一下他的架构，话不多说，开干！</p>
+</blockquote>
+<h1 id="整体架构">整体架构</h1>
+<p>超分代码大多存在于src文件夹中，首先我们先来看看代码的大致结构:</p>
+<p><img src="\assets\BlogPic\超分代码详解1.png"></p>
+<p>可以看出，代码被包装成三个子部分以及main函数部分。</p>
 <ul>
-<li><ol type="1">
-<li><strong>SDO</strong>-主设备数据输出，从设备数据输入；</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li><strong>SDI</strong>-主设备数据输入，从设备数据输出；</li>
-</ol></li>
-<li><ol start="3" type="1">
-<li><strong>SCLK</strong>-时钟信号，由主设备产生</li>
-</ol></li>
-<li><ol start="4" type="1">
-<li><strong>CS</strong>-设备使能信号，由主设备控制</li>
-</ol></li>
+<li>main函数部分</li>
+<li>data文件夹</li>
+<li>loss文件夹</li>
+<li>model文件夹</li>
 </ul>
-<p><img src="\assets\BlogPic\STM32-API4.jpg"/></p>
-<h1 id="spi特点">2.SPI特点</h1>
-<h2 id="spi控制方式">2.1.SPI控制方式</h2>
-<p>SPI采用主-从模式(Master-Slave)的控制方式。</p>
-<p>SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对Slave设备进行片选(Slave
-Select)来控制多个Slave设备，SPI协议还规定Slave设备的Clock由Master设备通过SCK管教提供给Slave设备，Slave设备本身不能产生或控制Clock，没有Clock则Slave设备不能正常工作。</p>
-<h2 id="spi传输方式">2.2.SPI传输方式</h2>
-<p>采用同步方式(Synchronous)传输数据</p>
-<p>Master设备会根据将要交换的数据来产生相应的时钟脉冲(Clock
-Pulse)，时钟脉冲组成了时钟信号(Clock
-Signal)，时钟信号通过时钟极性(CPOL)和时钟相位(CPHA)控制着两个SPI设备间合适数据交换以及何时对接受到的数据进行采样，来保证数据在两个设备之间是同步传输的。</p>
-<p><img src="\assets\BlogPic\STM32-API1.png"/></p>
-<p>如上图所示，不论是主机还是从机，在发送数据的同时也接收到了数据。</p>
-<h2 id="spi数据交换">2.3.SPI数据交换</h2>
-<p>SPI设备间通信的一个简单概述如下</p>
-<p><img src="\assets\BlogPic\STM32-API2.jpg"></p>
-<ul>
-<li><p>SSPBUF-(Synchronous Serial Port
-Buffer)，泛指SPI设备里面的内部缓冲区，一般在物理上是以FIFO的形式，保存传输过程的临时数据</p></li>
-<li><p>SSPSR-(Synchronous Serail Port
-Register)，泛指SPI设备里面的移位寄存器(Shift
-Regitser)，它的作用是根据设置好的数据位宽(bit-width)把数据移入或者移出SSPBUF</p></li>
-</ul>
-<p>SPI设备间数据传输又被称为数据交换，是因为SPI协议规定一个SPI设备不能在数据通信过程中仅仅只充当一个"发送者或者"接收者(Receiver)"。在每一个Clock周期时间内，SPI都会发送并且同时接受一个bit大小的数据，相当于是这一个bit的数据被交换了，而不是单方面发送。</p>
-<p><img src="\assets\BlogPic\STM32-API3.gif"/></p>
-<h1 id="spi相关代码">3.SPI相关代码</h1>
-<p>首先需要了解SPI的结构体SPI_InitTypeDef的定义 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">typedef struct<br>&#123;<br>    uint16_t SPI_Direction;<br>    uint16_t SPI_Mode;<br>    uint16_t SPI_DataSize;<br>    uint16_t SPI_CPOL;<br>    uint16_t SPI_CPHA;<br>    uint16_t SPI_NSS;<br>    uint16_t SPI_BaudRatePrescaler;<br>    uint16_t SPI_FirstBit;<br>    uint16_t SPI_CRCPolynomial;<br>&#125;SPI_InitTypeDef;<br></code></pre></td></tr></table></figure>
-参数说明：</p>
-<ul>
-<li>SPI_Direction是用来设置SPI的通信方式，可以选择为半双工，全双工以及串行发和串行收方式.</li>
-<li>SPI_Mode用来设置SPI的主从模式，主机模式为SPI_Mode_Master,从机模式为SPI_Mode_Slave</li>
-<li>SPI_DataSize
-为8位还是16位帧格式选择项，SPI_DataSize_8b或者SPI_DataSize_16b</li>
-<li>SPI_CPOL 用来设置时钟极性。</li>
-<li>SPI_CPHA用来设置时钟相位，也就是选择在串行同步时钟的第几个跳变沿(上升或下降)数据被采样，可以设置为第一个或者第二个跳变沿采集，SPI_CPHA_1Edge或者SPI_CPHA_2Edge</li>
-<li>SPI_NSS 设置NSS信号由硬件(NSS管教)还是软件控制。</li>
-<li>SPI_BaudRatePrescaler是设置SPI波特率预分频值也就是决定SPI的时钟的参数，有8个可选值。</li>
-<li>SPI_FirstBit设置数据是MSB位在前还是LSB位在前。</li>
-<li>SPI_CRCPolynomial
-是用来设置CRC校验多项式，提高通信可靠性，大于1即可。</li>
-</ul>
-<p>在使用SPI之前，需要对SPI进行初始化： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_InitTypeDef SPI_InitStructure;<br>SPI_InitStructure.SPI_Direction=SPI_Direction_2Lines_FullDuplex;  // 双线双向全双工<br>SPI_InitStructure.SPI_Mode=SPI_Mode_Master;     // 主机模式<br>SPI_InitStructure.SPI_DataSize=SPI_DataSize_8b;     // SPI发送接收8位帧结构<br>SPI_InitStructure.SPI_CPOL=SPI_CPOL_High;   // 串行同步时钟的空闲状态为高电平<br>SPI_InitStructure.SPI_CPHA=SPI_CPHA_2Edge;      // 第二个跳变沿数据被采样<br>SPI_InitStructure.SPI_NSS=SPI_NSS_Soft;     // NSS信号由软件控制<br>SPI_InitStructure.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_256;    //预分频256<br>SPI_InitStructure.SPI_FirstBit=SPI_FirstBit_MSB;      // 数据传输从MSB位开始<br>SPI_InitStructure.SPI_CRCPolynomial=7;     // CRC值为7<br>SPI_Init(SPI2,&amp;SPI_InitStructure);     // 根据指定的参数初始化外设SPIx寄存器<br></code></pre></td></tr></table></figure></p>
-<p>在初始化之后，接下来便是使能SPI通信，假设我们使能SPI2，具体的方法是：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_Cmd(SPI2,ENABLE);   // 使能SPI外设<br></code></pre></td></tr></table></figure></p>
-<p>接下来便可以使用SPI传输数据，固件库提供的发送函数以及接收函数原型为：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">void SPI_I2S_SendData(SPI_TypeDef* SPIx,uint16_t Data);<br>uint16_t SPI_I2S_ReceiveData(SPI_TypeDef* SPIx);<br></code></pre></td></tr></table></figure>
-第一个函数很好理解，即往SPIx数据寄存器里写入数据Data，从而实现发送。第二个函数就是从SPIx数据寄存器读出接收到的数据</p>
-<p>在SPI传输数据过程中，我们经常要判断数据是否传输完成，发送区是否为空等等状态，这是通过函数SPI_I2S_GetFlagStatus实现的：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_RXNE);<br></code></pre></td></tr></table></figure></p>
-<p>利用上述函数，可以封装一个读写的API，即SPIx_ReadWriteByte函数，函数原型为：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">u8 SPIx_ReadWriteByte(u8 TxData)<br>&#123;<br>    u8 retry=0;<br>    while(SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_TXE)==RESNET)<br>    &#123;<br>        retry++;<br>        if(retry&gt;200) return 0;<br>    &#125;<br>    SPI_I2S_SendData(SPI2,TxData);<br>    retry=0<br>    while(SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_TXE)==RESNET)<br>    &#123;<br>        retry++;<br>        if(retry&gt;200) return 0;<br>    &#125;<br>    return SPI_I2S_ReceiveData(SPI2);  // 返回通过SPIx最近接收的数据<br>&#125;<br></code></pre></td></tr></table></figure></p>
-<p>其作用是往SPIx发送缓冲区写入数据的同时可以读取SPIx接收缓冲区中的数据。</p>
-<p>那么为什么可以如此实现呢，这需要我们对SPI的框架有所了解。</p>
-<p><img src="\assets\BlogPic\STM32-API5.png"></p>
-<p>从框图可以看出SPI有两个缓冲区，一个用于写入(发送缓冲区)，一个用于读取(接收缓冲区)。对数据的寄存器执行写操作时，数据将写入发送缓冲区，从数据寄存器执行读取时，将返回接收缓冲区中的值。这样写并不会出现读到的数据等于发送的数据的情况。</p>
-<p>参考资料：</p>
-<p>[1] <a
-target="_blank" rel="noopener" href="https://blog.csdn.net/Firefly_cjd/article/details/51935079?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=STM32%20SPI&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-6-51935079.142%5Ev2%5Epc_search_result_control_group,143%5Ev4%5Econtrol&amp;spm=1018.2226.3001.4187">STM32
-SPI详解</a></p>
-<p>[2] <a href="">正点原子STM32F1开发指南(精英版-库函数版)</a></p>
-<p>[3] <a
-target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/article/details/109915670?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164788150016780265495983%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=164788150016780265495983&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-8-109915670.142%5Ev2%5Epc_search_result_control_group,143%5Ev4%5Econtrol&amp;utm_term=SPI%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%88%E5%8F%91%E9%80%81%E5%AF%84%E5%AD%98%E5%99%A8%E5%8F%B7%E5%86%8D%E5%86%99%E5%80%BC&amp;spm=1018.2226.3001.4187">SPI
-读取不同长度 寄存器_STM32硬件SPI主从通信实例</a></p>
+<h1 id="main函数部分">main函数部分</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-keyword">import</span> utility<br><span class="hljs-keyword">import</span> data<br><span class="hljs-keyword">import</span> model<br><span class="hljs-keyword">import</span> loss<br><span class="hljs-keyword">from</span> option <span class="hljs-keyword">import</span> args<br><span class="hljs-keyword">from</span> trainer <span class="hljs-keyword">import</span> Trainer<br><br>torch.manual_seed(args.seed)    <span class="hljs-comment">#</span><br>checkpoint = utility.checkpoint(args)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">global</span> model<br>    <span class="hljs-keyword">if</span> args.data_test == [<span class="hljs-string">&#x27;video&#x27;</span>]:<br>        <span class="hljs-keyword">from</span> videotester <span class="hljs-keyword">import</span> VideoTester<br>        model = model.Model(args, checkpoint)<br>        t = VideoTester(args, model, checkpoint)<br>        t.test()<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">if</span> checkpoint.ok:<br>            loader = data.Data(args)<br>            _model = model.Model(args, checkpoint)<br>            _loss = loss.Loss(args, checkpoint) <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> args.test_only <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span><br>            t = Trainer(args, loader, _model, _loss, checkpoint)<br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> t.terminate():<br>                t.train()<br>                t.test()<br><br>            checkpoint.done()<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+<p>下面我们来仔细刨析这短短的几行代码:</p>
+<p>首先先设置了随机数种子，设计随机数种子的好处在于每次从头开始训练网络时，网络的权重都是一致的。随后创建了一个<code>checkpoint</code>对象。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">torch.manual_seed(args.seed)<br>checkpoint=utility.checkpoint(args)<br></code></pre></td></tr></table></figure>
+<p>接下来就是main函数部分，结构比较经典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">global</span> model  <span class="hljs-comment"># 创建全局变量global</span><br>    <span class="hljs-keyword">if</span> args.data_test == [<span class="hljs-string">&#x27;video&#x27;</span>]: <span class="hljs-comment"># 进入推理部分</span><br>        <span class="hljs-keyword">from</span> videotester <span class="hljs-keyword">import</span> VideoTester<br>        model = model.Model(args, checkpoint)<br>        t = VideoTester(args, model, checkpoint)<br>        t.test()<br>    <span class="hljs-keyword">else</span>:    <span class="hljs-comment"># 进入训练部分</span><br>        <span class="hljs-keyword">if</span> checkpoint.ok:   <br>            loader = data.Data(args) <span class="hljs-comment"># 读取数据</span><br>            _model = model.Model(args, checkpoint) <span class="hljs-comment"># 初始化模型Model</span><br>            _loss = loss.Loss(args, checkpoint) <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> args.test_only <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span> <span class="hljs-comment"># 初始化损失模型</span><br>            t = Trainer(args, loader, _model, _loss, checkpoint) <span class="hljs-comment"># 初始化Trainer类</span><br>            <span class="hljs-keyword">while</span> <span class="hljs-keyword">not</span> t.terminate():<br>                t.train()   <span class="hljs-comment"># 训练</span><br>                t.test()    <span class="hljs-comment"># 推理，</span><br><br>            checkpoint.done()  <span class="hljs-comment"># 关闭，类似于释放内存</span><br></code></pre></td></tr></table></figure>
+<h1 id="dataloader.py-加载数据部分">Dataloader.py 加载数据部分</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><code class="hljs python"><br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> torch.multiprocessing <span class="hljs-keyword">as</span> multiprocessing<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> DataLoader<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> SequentialSampler<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> RandomSampler<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> BatchSampler<br><span class="hljs-keyword">from</span> torch.utils.data <span class="hljs-keyword">import</span> _utils<br><span class="hljs-keyword">from</span> torch.utils.data.dataloader <span class="hljs-keyword">import</span> _DataLoaderIter<br><br><span class="hljs-keyword">from</span> torch.utils.data._utils <span class="hljs-keyword">import</span> collate<br><span class="hljs-keyword">from</span> torch.utils.data._utils <span class="hljs-keyword">import</span> signal_handling<br><span class="hljs-keyword">from</span> torch.utils.data._utils <span class="hljs-keyword">import</span> MP_STATUS_CHECK_INTERVAL<br><span class="hljs-keyword">from</span> torch.utils.data._utils <span class="hljs-keyword">import</span> ExceptionWrapper<br><span class="hljs-keyword">from</span> torch.utils.data._utils <span class="hljs-keyword">import</span> IS_WINDOWS<br><span class="hljs-keyword">from</span> torch.utils.data._utils.worker <span class="hljs-keyword">import</span> ManagerWatchdog<br><br><span class="hljs-keyword">from</span> torch._six <span class="hljs-keyword">import</span> queue<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">_ms_loop</span>(<span class="hljs-params">dataset, index_queue, data_queue, done_event, collate_fn, scale, seed, init_fn, worker_id</span>):<br>    <span class="hljs-keyword">try</span>:<br>        collate._use_shared_memory = <span class="hljs-literal">True</span><br>        signal_handling._set_worker_signal_handlers()<br><br>        torch.set_num_threads(<span class="hljs-number">1</span>)<br>        random.seed(seed)<br>        torch.manual_seed(seed)<br><br>        data_queue.cancel_join_thread()<br><br>        <span class="hljs-keyword">if</span> init_fn <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            init_fn(worker_id)<br><br>        watchdog = ManagerWatchdog()<br><br>        <span class="hljs-keyword">while</span> watchdog.is_alive():<br>            <span class="hljs-keyword">try</span>:<br>                r = index_queue.get(timeout=MP_STATUS_CHECK_INTERVAL)<br>            <span class="hljs-keyword">except</span> queue.Empty:<br>                <span class="hljs-keyword">continue</span><br><br>            <span class="hljs-keyword">if</span> r <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>                <span class="hljs-keyword">assert</span> done_event.is_set()<br>                <span class="hljs-keyword">return</span><br>            <span class="hljs-keyword">elif</span> done_event.is_set():<br>                <span class="hljs-keyword">continue</span><br><br>            idx, batch_indices = r<br>            <span class="hljs-keyword">try</span>:<br>                idx_scale = <span class="hljs-number">0</span><br>                <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(scale) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> dataset.train:<br>                    idx_scale = random.randrange(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(scale))<br>                    dataset.set_scale(idx_scale)<br><br>                samples = collate_fn([dataset[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> batch_indices])<br>                samples.append(idx_scale)<br>            <span class="hljs-keyword">except</span> Exception:<br>                data_queue.put((idx, ExceptionWrapper(sys.exc_info())))<br>            <span class="hljs-keyword">else</span>:<br>                data_queue.put((idx, samples))<br>                <span class="hljs-keyword">del</span> samples<br><br>    <span class="hljs-keyword">except</span> KeyboardInterrupt:<br>        <span class="hljs-keyword">pass</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">_MSDataLoaderIter</span>(<span class="hljs-title class_ inherited__">_DataLoaderIter</span>):<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, loader</span>):<br>        self.dataset = loader.dataset<br>        self.scale = loader.scale<br>        self.collate_fn = loader.collate_fn<br>        self.batch_sampler = loader.batch_sampler<br>        self.num_workers = loader.num_workers<br>        self.pin_memory = loader.pin_memory <span class="hljs-keyword">and</span> torch.cuda.is_available()<br>        self.timeout = loader.timeout<br><br>        self.sample_iter = <span class="hljs-built_in">iter</span>(self.batch_sampler)<br><br>        base_seed = torch.LongTensor(<span class="hljs-number">1</span>).random_().item()<br><br>        <span class="hljs-keyword">if</span> self.num_workers &gt; <span class="hljs-number">0</span>:<br>            self.worker_init_fn = loader.worker_init_fn<br>            self.worker_queue_idx = <span class="hljs-number">0</span><br>            self.worker_result_queue = multiprocessing.Queue()<br>            self.batches_outstanding = <span class="hljs-number">0</span><br>            self.worker_pids_set = <span class="hljs-literal">False</span><br>            self.shutdown = <span class="hljs-literal">False</span><br>            self.send_idx = <span class="hljs-number">0</span><br>            self.rcvd_idx = <span class="hljs-number">0</span><br>            self.reorder_dict = &#123;&#125;<br>            self.done_event = multiprocessing.Event()<br><br>            base_seed = torch.LongTensor(<span class="hljs-number">1</span>).random_()[<span class="hljs-number">0</span>]<br><br>            self.index_queues = []<br>            self.workers = []<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(self.num_workers):<br>                index_queue = multiprocessing.Queue()<br>                index_queue.cancel_join_thread()<br>                w = multiprocessing.Process(<br>                    target=_ms_loop,<br>                    args=(<br>                        self.dataset,<br>                        index_queue,<br>                        self.worker_result_queue,<br>                        self.done_event,<br>                        self.collate_fn,<br>                        self.scale,<br>                        base_seed + i,<br>                        self.worker_init_fn,<br>                        i<br>                    )<br>                )<br>                w.daemon = <span class="hljs-literal">True</span><br>                w.start()<br>                self.index_queues.append(index_queue)<br>                self.workers.append(w)<br><br>            <span class="hljs-keyword">if</span> self.pin_memory:<br>                self.data_queue = queue.Queue()<br>                pin_memory_thread = threading.Thread(<br>                    target=_utils.pin_memory._pin_memory_loop,<br>                    args=(<br>                        self.worker_result_queue,<br>                        self.data_queue,<br>                        torch.cuda.current_device(),<br>                        self.done_event<br>                    )<br>                )<br>                pin_memory_thread.daemon = <span class="hljs-literal">True</span><br>                pin_memory_thread.start()<br>                self.pin_memory_thread = pin_memory_thread<br>            <span class="hljs-keyword">else</span>:<br>                self.data_queue = self.worker_result_queue<br><br>            _utils.signal_handling._set_worker_pids(<br>                <span class="hljs-built_in">id</span>(self), <span class="hljs-built_in">tuple</span>(w.pid <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> self.workers)<br>            )<br>            _utils.signal_handling._set_SIGCHLD_handler()<br>            self.worker_pids_set = <span class="hljs-literal">True</span><br><br>            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> * self.num_workers):<br>                self._put_indices()<br><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MSDataLoader</span>(<span class="hljs-title class_ inherited__">DataLoader</span>):<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, cfg, *args, **kwargs</span>):<br>        <span class="hljs-built_in">super</span>(MSDataLoader, self).__init__(<br>            *args, **kwargs, num_workers=cfg.n_threads<br>        )<br>        self.scale = cfg.scale<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__iter__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-keyword">return</span> _MSDataLoaderIter(self)<br></code></pre></td></tr></table></figure>
 
     </article>
     <!-- license -->
@@ -587,16 +525,16 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/artic
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href="/2022/03/5033dc9b/" title="MarkdownBasis">
-                    <div class="nextTitle">MarkdownBasis</div>
+                <a href="/2022/04/441e3c42/" title="PWM波">
+                    <div class="nextTitle">PWM波</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href="/2022/03/a810a1d/" title="HEVC">
-                    <div class="prevTitle">HEVC</div>
+                <a href="/2022/04/639dab3e/" title="超分损失函数总结">
+                    <div class="prevTitle">超分损失函数总结</div>
                 </a>
             
         </li>
@@ -736,7 +674,7 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/artic
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1.SPI简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E7%9A%84%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 SPI的通信协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 基本工作原理概述</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%89%B9%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">2.SPI特点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">2.1.SPI控制方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2.SPI传输方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="toc-number">2.3.</span> <span class="toc-text">2.3.SPI数据交换</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%9B%B8%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">3.SPI相关代码</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#main%E5%87%BD%E6%95%B0%E9%83%A8%E5%88%86"><span class="toc-number">2.</span> <span class="toc-text">main函数部分</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#dataloader.py-%E5%8A%A0%E8%BD%BD%E6%95%B0%E6%8D%AE%E9%83%A8%E5%88%86"><span class="toc-number">3.</span> <span class="toc-text">Dataloader.py 加载数据部分</span></a></li></ol>
             </div>
         
         <!-- sidebar -->

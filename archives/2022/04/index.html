@@ -430,6 +430,133 @@
             
         
         <article class="index-post">
+            <a class="abstract-title" href="/2022/04/441e3c42/">
+                
+                <span class="abstract-title-text">PWM波</span>
+            </a>
+            <div class="abstract-content">
+                
+PWM的用处很广泛，此处开博记录一下STM32系列芯片输出PWM波的具体过程
+
+1.PWM波概述
+PWM波形(Pulse Width Modulation
+wave)，是一种脉冲宽度调制即占空比可变的脉冲波形
+1.1 PWM 基本原理
+脉宽调制（PWM）基本原理：控制方式就是对逆变电路开关器件的通断进行控制，使输出端得到一系列幅值相等的脉冲，用这些脉冲来代替正弦波或所需要的波形。也就是在输出波形的半个周期中产生多个脉冲，使各脉冲的等值电压为正弦波形，所获得的输出平滑且低次谐波少。按一定的规则对各脉冲的宽度进行调制，即可改变逆变电路输出电压的大小，也可改变输出频率。　
+...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/04/26">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/25</span>
+                </div>
+                <!-- tags -->
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/04/72babca7/">
+                
+                <span class="abstract-title-text">超分代码详解</span>
+            </a>
+            <div class="abstract-content">
+                
+
+
+    hljs.initHighlightingOnLoad();
+
+
+近段时间在Github上git了很多超分代码，绞尽脑汁也无法推理，于是就想挑一份代码详细研究一下他的架构，话不多说，开干！
+
+整体架构
+超分代码大多存在于src文件夹中，首先我们先来看看代码的大致结构:
+
+可以看出，代码被包装成三个子部分以及main函数部分。
+
+main函数部分
+data文件夹
+loss文件夹
+model文件夹
+
+main函数部分
+123456789101112131415161718192021222324252627282930313233impor...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/04/24">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/24</span>
+                </div>
+                <!-- tags -->
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
+            <a class="abstract-title" href="/2022/04/639dab3e/">
+                
+                <span class="abstract-title-text">超分损失函数总结</span>
+            </a>
+            <div class="abstract-content">
+                超分损失函数总结
+1.Pixel loss 像素级损失
+用途
+用来度量生成图片和目标图片的像素级差异
+主要公式
+
+L1 LOSS：
+
+\[L_{pixel
+\_l1}(\hat{I},I)=\frac{1}{hwc}\sum_{i,j,k}|\hat{I}_{i,j,k}-I_{i,j,k}|\]
+
+L2 LOSS:
+
+\[L_{pixel
+\_l2}(\hat{I},I)=\frac{1}{hwc}{\sum_{i,j,k}(\hat{I}_{i,j,k}-I_{i,j,k})^2}\]
+
+Chaebonnier Loss
+
+\[L_{pixel
+...
+            </div>
+            <!-- read more -->
+            
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2022/04/21">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/21</span>
+                </div>
+                <!-- tags -->
+                
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    
+        
+        
+        
+        
+            
+        
+        <article class="index-post">
             <a class="abstract-title" href="/2022/04/73edeb87/">
                 
                 <span class="abstract-title-text">Pytorch推理相关</span>
@@ -446,16 +573,15 @@
 Pytorch
 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件——&gt;将其导入Model模型中——&gt;调用模型中的前向传播forward函数进行推理
 
-
 .pth文件
 
-12345678910int a;double otypedef struct a&#123...
+12345678910int a;double otypedef struct a&#123; ...
             </div>
             <!-- read more -->
             
             <div class="abstract-post-meta">
                 <!-- date -->
-                <div class="abstract-date" title="Last updated: 2022/04/17">
+                <div class="abstract-date" title="Last updated: 2022/04/21">
                     <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2022/04/07</span>
                 </div>
                 <!-- tags -->
@@ -647,7 +773,52 @@ Pytorch
         
         
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -748,7 +919,7 @@ Pytorch
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 16
+        Total : 19
         </div>
         <!-- search  -->
         
@@ -762,6 +933,24 @@ Pytorch
             <div class="archive-year"> 2022 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/25</span>
+            <a class="archive-post-title" href="/2022/04/441e3c42/">PWM波</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/24</span>
+            <a class="archive-post-title" href="/2022/04/72babca7/">超分代码详解</a>
+        </li>
+    
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/21</span>
+            <a class="archive-post-title" href="/2022/04/639dab3e/">超分损失函数总结</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">04/07</span>
@@ -789,7 +978,7 @@ Pytorch
         
         <li class="archive-post-item">
             <span class="archive-post-date">03/22</span>
-            <a class="archive-post-title" href="/2022/03/140ab620/">树莓派</a>
+            <a class="archive-post-title" href="/2022/03/140ab620/">树莓派基础</a>
         </li>
     
         

@@ -19,28 +19,25 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="1.SPI简介 1.1 SPI的通信协议 SPI(Serial Peripheral Interface)，顾名思义就是串行外围设备接口，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。 SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对">
+    <meta name="description" content="PWM的用处很广泛，此处开博记录一下STM32系列芯片输出PWM波的具体过程  1.PWM波概述 PWM波形(Pulse Width Modulation wave)，是一种脉冲宽度调制即占空比可变的脉冲波形 1.1 PWM 基本原理 脉宽调制（PWM）基本原理：控制方式就是对逆变电路开关器件的通断进行控制，使输出端得到一系列幅值相等的脉冲，用这些脉冲来代替正弦波或所需要的波形。也">
 <meta property="og:type" content="article">
-<meta property="og:title" content="STM32-API">
-<meta property="og:url" content="https://loushengtao.github.io/2022/03/769b363c/index.html">
+<meta property="og:title" content="PWM波">
+<meta property="og:url" content="https://loushengtao.github.io/2022/04/441e3c42/index.html">
 <meta property="og:site_name" content="1st&#39;s stdio">
-<meta property="og:description" content="1.SPI简介 1.1 SPI的通信协议 SPI(Serial Peripheral Interface)，顾名思义就是串行外围设备接口，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。 SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对">
+<meta property="og:description" content="PWM的用处很广泛，此处开博记录一下STM32系列芯片输出PWM波的具体过程  1.PWM波概述 PWM波形(Pulse Width Modulation wave)，是一种脉冲宽度调制即占空比可变的脉冲波形 1.1 PWM 基本原理 脉宽调制（PWM）基本原理：控制方式就是对逆变电路开关器件的通断进行控制，使输出端得到一系列幅值相等的脉冲，用这些脉冲来代替正弦波或所需要的波形。也">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API4.jpg">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API1.png">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API2.jpg">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API3.gif">
-<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API5.png">
-<meta property="article:published_time" content="2022-03-03T07:24:30.000Z">
-<meta property="article:modified_time" content="2022-03-22T02:50:38.142Z">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/PWM波1.png">
+<meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/PWM波2.png">
+<meta property="article:published_time" content="2022-04-25T03:47:51.000Z">
+<meta property="article:modified_time" content="2022-04-26T06:47:09.859Z">
 <meta property="article:author" content="Levite.Lou">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://loushengtao.github.io/assets/BlogPic/STM32-API4.jpg">
+<meta name="twitter:image" content="https://loushengtao.github.io/assets/BlogPic/PWM波1.png">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <link rel="icon" href="/assets/favicon.ico">
     
-    <title>STM32-API · 1st&#39;s Studio</title>
+    <title>PWM波 · 1st&#39;s Studio</title>
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
 - testing support for link[rel=preload]
@@ -267,7 +264,7 @@
                 <a href="/">1st&#39;s Studio.</a>
             </div>
             <div class="post-title header-element">
-                <a href="#" class="post-name">STM32-API</a>
+                <a href="#" class="post-name">PWM波</a>
             </div>
         </div>
     
@@ -313,7 +310,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-                STM32-API
+                PWM波
             <!-- 404 -->
             
         </h1>
@@ -332,13 +329,13 @@
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.7k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">500</span>阅读时长: <span class="post-count reading-time">1 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <!-- 撰写日期 -->
                     <span class="iconfont-archer post-intro-calander">&#xe676;</span>
-                    <span class="post-intro-time">2022/03/03</span>
+                    <span class="post-intro-time">2022/04/25</span>
                     <!-- busuanzi -->
                     
                         <span id="busuanzi_container_page_pv" class="busuanzi-pv">
@@ -493,91 +490,25 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <h1 id="spi简介">1.SPI简介</h1>
-<h2 id="spi的通信协议">1.1 SPI的通信协议</h2>
-<p>SPI(Serial Peripheral
-Interface)，<strong>顾名思义就是串行外围设备接口</strong>，是一种串行同步通讯协议，由一个主设备和一个或多个从设备组成，主设备启动与一个从设备的同步通讯，从而完成数据的交换。</p>
-<p>SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对Slave设备进行片选(Slave
-Select)来控制多个Slave设备，SPI协议还规定Slave设备的Clodck由Master设备通过SCK管教提供给Slave设备，Slave设备本身不能产生或控制Clock，没有Clock则Slave设备不能正常工作</p>
-<h2 id="基本工作原理概述">1.2 基本工作原理概述</h2>
-<p>SPI接口一般由4根线组成，单向传输时3根线也可以。这四根线也是所有基于SPI的设备共有的，它们是SDI(数据输入)、SDO(数据输出)、SCLK(时钟)、CS(片选)。</p>
-<ul>
-<li><ol type="1">
-<li><strong>SDO</strong>-主设备数据输出，从设备数据输入；</li>
-</ol></li>
-<li><ol start="2" type="1">
-<li><strong>SDI</strong>-主设备数据输入，从设备数据输出；</li>
-</ol></li>
-<li><ol start="3" type="1">
-<li><strong>SCLK</strong>-时钟信号，由主设备产生</li>
-</ol></li>
-<li><ol start="4" type="1">
-<li><strong>CS</strong>-设备使能信号，由主设备控制</li>
-</ol></li>
-</ul>
-<p><img src="\assets\BlogPic\STM32-API4.jpg"/></p>
-<h1 id="spi特点">2.SPI特点</h1>
-<h2 id="spi控制方式">2.1.SPI控制方式</h2>
-<p>SPI采用主-从模式(Master-Slave)的控制方式。</p>
-<p>SPI规定了两个SPI设备之间通信必须由主设备(Master)来控制次设备(Slave)。一个Master设备可以通过提供Clock以及对Slave设备进行片选(Slave
-Select)来控制多个Slave设备，SPI协议还规定Slave设备的Clock由Master设备通过SCK管教提供给Slave设备，Slave设备本身不能产生或控制Clock，没有Clock则Slave设备不能正常工作。</p>
-<h2 id="spi传输方式">2.2.SPI传输方式</h2>
-<p>采用同步方式(Synchronous)传输数据</p>
-<p>Master设备会根据将要交换的数据来产生相应的时钟脉冲(Clock
-Pulse)，时钟脉冲组成了时钟信号(Clock
-Signal)，时钟信号通过时钟极性(CPOL)和时钟相位(CPHA)控制着两个SPI设备间合适数据交换以及何时对接受到的数据进行采样，来保证数据在两个设备之间是同步传输的。</p>
-<p><img src="\assets\BlogPic\STM32-API1.png"/></p>
-<p>如上图所示，不论是主机还是从机，在发送数据的同时也接收到了数据。</p>
-<h2 id="spi数据交换">2.3.SPI数据交换</h2>
-<p>SPI设备间通信的一个简单概述如下</p>
-<p><img src="\assets\BlogPic\STM32-API2.jpg"></p>
-<ul>
-<li><p>SSPBUF-(Synchronous Serial Port
-Buffer)，泛指SPI设备里面的内部缓冲区，一般在物理上是以FIFO的形式，保存传输过程的临时数据</p></li>
-<li><p>SSPSR-(Synchronous Serail Port
-Register)，泛指SPI设备里面的移位寄存器(Shift
-Regitser)，它的作用是根据设置好的数据位宽(bit-width)把数据移入或者移出SSPBUF</p></li>
-</ul>
-<p>SPI设备间数据传输又被称为数据交换，是因为SPI协议规定一个SPI设备不能在数据通信过程中仅仅只充当一个"发送者或者"接收者(Receiver)"。在每一个Clock周期时间内，SPI都会发送并且同时接受一个bit大小的数据，相当于是这一个bit的数据被交换了，而不是单方面发送。</p>
-<p><img src="\assets\BlogPic\STM32-API3.gif"/></p>
-<h1 id="spi相关代码">3.SPI相关代码</h1>
-<p>首先需要了解SPI的结构体SPI_InitTypeDef的定义 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">typedef struct<br>&#123;<br>    uint16_t SPI_Direction;<br>    uint16_t SPI_Mode;<br>    uint16_t SPI_DataSize;<br>    uint16_t SPI_CPOL;<br>    uint16_t SPI_CPHA;<br>    uint16_t SPI_NSS;<br>    uint16_t SPI_BaudRatePrescaler;<br>    uint16_t SPI_FirstBit;<br>    uint16_t SPI_CRCPolynomial;<br>&#125;SPI_InitTypeDef;<br></code></pre></td></tr></table></figure>
-参数说明：</p>
-<ul>
-<li>SPI_Direction是用来设置SPI的通信方式，可以选择为半双工，全双工以及串行发和串行收方式.</li>
-<li>SPI_Mode用来设置SPI的主从模式，主机模式为SPI_Mode_Master,从机模式为SPI_Mode_Slave</li>
-<li>SPI_DataSize
-为8位还是16位帧格式选择项，SPI_DataSize_8b或者SPI_DataSize_16b</li>
-<li>SPI_CPOL 用来设置时钟极性。</li>
-<li>SPI_CPHA用来设置时钟相位，也就是选择在串行同步时钟的第几个跳变沿(上升或下降)数据被采样，可以设置为第一个或者第二个跳变沿采集，SPI_CPHA_1Edge或者SPI_CPHA_2Edge</li>
-<li>SPI_NSS 设置NSS信号由硬件(NSS管教)还是软件控制。</li>
-<li>SPI_BaudRatePrescaler是设置SPI波特率预分频值也就是决定SPI的时钟的参数，有8个可选值。</li>
-<li>SPI_FirstBit设置数据是MSB位在前还是LSB位在前。</li>
-<li>SPI_CRCPolynomial
-是用来设置CRC校验多项式，提高通信可靠性，大于1即可。</li>
-</ul>
-<p>在使用SPI之前，需要对SPI进行初始化： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_InitTypeDef SPI_InitStructure;<br>SPI_InitStructure.SPI_Direction=SPI_Direction_2Lines_FullDuplex;  // 双线双向全双工<br>SPI_InitStructure.SPI_Mode=SPI_Mode_Master;     // 主机模式<br>SPI_InitStructure.SPI_DataSize=SPI_DataSize_8b;     // SPI发送接收8位帧结构<br>SPI_InitStructure.SPI_CPOL=SPI_CPOL_High;   // 串行同步时钟的空闲状态为高电平<br>SPI_InitStructure.SPI_CPHA=SPI_CPHA_2Edge;      // 第二个跳变沿数据被采样<br>SPI_InitStructure.SPI_NSS=SPI_NSS_Soft;     // NSS信号由软件控制<br>SPI_InitStructure.SPI_BaudRatePrescaler=SPI_BaudRatePrescaler_256;    //预分频256<br>SPI_InitStructure.SPI_FirstBit=SPI_FirstBit_MSB;      // 数据传输从MSB位开始<br>SPI_InitStructure.SPI_CRCPolynomial=7;     // CRC值为7<br>SPI_Init(SPI2,&amp;SPI_InitStructure);     // 根据指定的参数初始化外设SPIx寄存器<br></code></pre></td></tr></table></figure></p>
-<p>在初始化之后，接下来便是使能SPI通信，假设我们使能SPI2，具体的方法是：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_Cmd(SPI2,ENABLE);   // 使能SPI外设<br></code></pre></td></tr></table></figure></p>
-<p>接下来便可以使用SPI传输数据，固件库提供的发送函数以及接收函数原型为：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">void SPI_I2S_SendData(SPI_TypeDef* SPIx,uint16_t Data);<br>uint16_t SPI_I2S_ReceiveData(SPI_TypeDef* SPIx);<br></code></pre></td></tr></table></figure>
-第一个函数很好理解，即往SPIx数据寄存器里写入数据Data，从而实现发送。第二个函数就是从SPIx数据寄存器读出接收到的数据</p>
-<p>在SPI传输数据过程中，我们经常要判断数据是否传输完成，发送区是否为空等等状态，这是通过函数SPI_I2S_GetFlagStatus实现的：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_RXNE);<br></code></pre></td></tr></table></figure></p>
-<p>利用上述函数，可以封装一个读写的API，即SPIx_ReadWriteByte函数，函数原型为：
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">u8 SPIx_ReadWriteByte(u8 TxData)<br>&#123;<br>    u8 retry=0;<br>    while(SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_TXE)==RESNET)<br>    &#123;<br>        retry++;<br>        if(retry&gt;200) return 0;<br>    &#125;<br>    SPI_I2S_SendData(SPI2,TxData);<br>    retry=0<br>    while(SPI_I2S_GetFlagStatus(SPI2,SPI_I2S_FLAG_TXE)==RESNET)<br>    &#123;<br>        retry++;<br>        if(retry&gt;200) return 0;<br>    &#125;<br>    return SPI_I2S_ReceiveData(SPI2);  // 返回通过SPIx最近接收的数据<br>&#125;<br></code></pre></td></tr></table></figure></p>
-<p>其作用是往SPIx发送缓冲区写入数据的同时可以读取SPIx接收缓冲区中的数据。</p>
-<p>那么为什么可以如此实现呢，这需要我们对SPI的框架有所了解。</p>
-<p><img src="\assets\BlogPic\STM32-API5.png"></p>
-<p>从框图可以看出SPI有两个缓冲区，一个用于写入(发送缓冲区)，一个用于读取(接收缓冲区)。对数据的寄存器执行写操作时，数据将写入发送缓冲区，从数据寄存器执行读取时，将返回接收缓冲区中的值。这样写并不会出现读到的数据等于发送的数据的情况。</p>
-<p>参考资料：</p>
-<p>[1] <a
-target="_blank" rel="noopener" href="https://blog.csdn.net/Firefly_cjd/article/details/51935079?ops_request_misc=&amp;request_id=&amp;biz_id=102&amp;utm_term=STM32%20SPI&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-6-51935079.142%5Ev2%5Epc_search_result_control_group,143%5Ev4%5Econtrol&amp;spm=1018.2226.3001.4187">STM32
-SPI详解</a></p>
-<p>[2] <a href="">正点原子STM32F1开发指南(精英版-库函数版)</a></p>
-<p>[3] <a
-target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/article/details/109915670?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164788150016780265495983%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&amp;request_id=164788150016780265495983&amp;biz_id=0&amp;utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-8-109915670.142%5Ev2%5Epc_search_result_control_group,143%5Ev4%5Econtrol&amp;utm_term=SPI%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%88%E5%8F%91%E9%80%81%E5%AF%84%E5%AD%98%E5%99%A8%E5%8F%B7%E5%86%8D%E5%86%99%E5%80%BC&amp;spm=1018.2226.3001.4187">SPI
-读取不同长度 寄存器_STM32硬件SPI主从通信实例</a></p>
+        <blockquote>
+<p>PWM的用处很广泛，此处开博记录一下STM32系列芯片输出PWM波的具体过程</p>
+</blockquote>
+<h1 id="pwm波概述">1.PWM波概述</h1>
+<p>PWM波形(Pulse Width Modulation
+wave)，是一种脉冲宽度调制即占空比可变的脉冲波形</p>
+<h1 id="pwm-基本原理">1.1 PWM 基本原理</h1>
+<p>脉宽调制（PWM）基本原理：控制方式就是对逆变电路开关器件的通断进行控制，使输出端得到一系列幅值相等的脉冲，用这些脉冲来代替正弦波或所需要的波形。也就是在输出波形的半个周期中产生多个脉冲，使各脉冲的等值电压为正弦波形，所获得的输出平滑且低次谐波少。按一定的规则对各脉冲的宽度进行调制，即可改变逆变电路输出电压的大小，也可改变输出频率。　</p>
+<p><img src="\assets\BlogPic\PWM波1.png"></p>
+<p>例如，把正弦半波波形分成N等份，就可把正弦半波看成由N个彼此相连的脉冲所组成的波形。这些脉冲宽度相等，都等于
+π/n
+，但幅值不等，且脉冲顶部不是水平直线，而是曲线，各脉冲的幅值按正弦规律变化。如果把上述脉冲序列用同样数量的等幅而不等宽的矩形脉冲序列代替，使矩形脉冲的中点和相应正弦等分的中点重合，且使矩形脉冲和相应正弦部分面积（即冲量）相等，就得到一组脉冲序列，这就是PWM波形。可以看出，各脉冲宽度是按正弦规律变化的。根据冲量相等效果相同的原理，PWM波形和正弦半波是等效的。对于正弦的负半周，也可以用同样的方法得到PWM波形。</p>
+<h1 id="stm32输出pwm波">2.STM32输出PWM波</h1>
+<p>此处以STM32F4系列芯片为例来输出PWM波。</p>
+<p>STM32中的PWM波依靠时钟输出，STM32中的定时器对应的管脚图如下</p>
+<p><img src="\assets\BlogPic\PWM波2.png"></p>
+<blockquote>
+<p>其中</p>
+</blockquote>
 
     </article>
     <!-- license -->
@@ -586,17 +517,12 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/artic
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href="/2022/03/5033dc9b/" title="MarkdownBasis">
-                    <div class="nextTitle">MarkdownBasis</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href="/2022/03/a810a1d/" title="HEVC">
-                    <div class="prevTitle">HEVC</div>
+                <a href="/2022/04/72babca7/" title="超分代码详解">
+                    <div class="prevTitle">超分代码详解</div>
                 </a>
             
         </li>
@@ -736,7 +662,7 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39664998/artic
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">1.SPI简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E7%9A%84%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 SPI的通信协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 基本工作原理概述</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%89%B9%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">2.SPI特点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">2.1.SPI控制方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E4%BC%A0%E8%BE%93%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">2.2.SPI传输方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spi%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2"><span class="toc-number">2.3.</span> <span class="toc-text">2.3.SPI数据交换</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spi%E7%9B%B8%E5%85%B3%E4%BB%A3%E7%A0%81"><span class="toc-number">3.</span> <span class="toc-text">3.SPI相关代码</span></a></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pwm%E6%B3%A2%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">1.PWM波概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pwm-%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">1.1 PWM 基本原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#stm32%E8%BE%93%E5%87%BApwm%E6%B3%A2"><span class="toc-number">3.</span> <span class="toc-text">2.STM32输出PWM波</span></a></li></ol>
             </div>
         
         <!-- sidebar -->
