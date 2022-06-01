@@ -19,12 +19,12 @@
         <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
     
     <meta name="description" content="">
-    <meta name="description" content="hljs.initHighlightingOnLoad();     理论上来说，掌握了如何推理，可以算是个披着狼皮的高级人工智能工程师了——(你虽然不懂原理，但你会用啊，打肿脸充胖子总是可以的)，OK，那接下来就来讲一下，Pytorch应该如何推理  pytorch 推理Pytorch 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件——&gt;将">
+    <meta name="description" content="hljs.initHighlightingOnLoad();   理论上来说，掌握了如何推理，可以算是个披着狼皮的高级人工智能工程师了——(你虽然不懂原理，但你会用啊，打肿脸充胖子总是可以的)，OK，那接下来就来讲一下，Pytorch应该如何推理  pytorch 推理 Pytorch 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pytorch推理相关">
 <meta property="og:url" content="https://loushengtao.github.io/2022/04/73edeb87/index.html">
 <meta property="og:site_name" content="1st&#39;s stdio">
-<meta property="og:description" content="hljs.initHighlightingOnLoad();     理论上来说，掌握了如何推理，可以算是个披着狼皮的高级人工智能工程师了——(你虽然不懂原理，但你会用啊，打肿脸充胖子总是可以的)，OK，那接下来就来讲一下，Pytorch应该如何推理  pytorch 推理Pytorch 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件——&gt;将">
+<meta property="og:description" content="hljs.initHighlightingOnLoad();   理论上来说，掌握了如何推理，可以算是个披着狼皮的高级人工智能工程师了——(你虽然不懂原理，但你会用啊，打肿脸充胖子总是可以的)，OK，那接下来就来讲一下，Pytorch应该如何推理  pytorch 推理 Pytorch 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/Pytorch推理相关1.png">
 <meta property="og:image" content="https://loushengtao.github.io/assets/BlogPic/Pytorch推理相关2.png">
@@ -329,7 +329,7 @@
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">634</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">626</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -490,20 +490,20 @@
             <div class="container container-unloaded">
                 <main class="main post-page">
     <article class="article-entry">
-        <link href="https://cdn.bootcss.com/highlight.js/8.0/styles/brown_paper.min.css" rel="stylesheet">
-
+        <p><link href="https://cdn.bootcss.com/highlight.js/8.0/styles/brown_paper.min.css" rel="stylesheet"></p>
 <script src="https://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-
 <script>
     hljs.initHighlightingOnLoad();
 </script>
-
-
 <blockquote>
 <p>理论上来说，掌握了如何推理，可以算是个披着狼皮的高级人工智能工程师了——(你虽然不懂原理，但你会用啊，打肿脸充胖子总是可以的)，OK，那接下来就来讲一下，Pytorch应该如何推理</p>
 </blockquote>
-<h1 id="pytorch-推理"><a href="#pytorch-推理" class="headerlink" title="pytorch 推理"></a>pytorch 推理</h1><p>Pytorch 的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件——&gt;将其导入Model模型中——&gt;调用模型中的前向传播<code>forward</code>函数进行推理</p>
-<h2 id="pytorch-读取文件推理的两个关键函数"><a href="#pytorch-读取文件推理的两个关键函数" class="headerlink" title="pytorch 读取文件推理的两个关键函数"></a>pytorch 读取文件推理的两个关键函数</h2><ul>
+<h1 id="pytorch-推理">pytorch 推理</h1>
+<p>Pytorch
+的推理过程一般为：保存训练后模型的网络参数文件——&gt;读取网络参数模型文件——&gt;将其导入Model模型中——&gt;调用模型中的前向传播<code>forward</code>函数进行推理</p>
+<h2 id="pytorch-读取文件推理的两个关键函数">pytorch
+读取文件推理的两个关键函数</h2>
+<ul>
 <li><code>torch.load()</code></li>
 </ul>
 <p>读取.pth文件或者.pth.tar文件，以字典方式存储</p>
@@ -511,28 +511,31 @@
 <li><code>model.load_state_dict()</code></li>
 </ul>
 <p>model为网络模型，将模型文件参数载入模型</p>
-<h3 id="1-pth文件"><a href="#1-pth文件" class="headerlink" title="1. .pth文件"></a>1. .pth文件</h3><p>首先保证自己的路径中存在要读取的模型参数文件.pth文件，然后再读入其文件。</p>
-<p><code>check=torch.load(&#39;srcnn_x2.pth&#39;)</code></p>
+<h3 id="pth文件">1. .pth文件</h3>
+<p>首先保证自己的路径中存在要读取的模型参数文件.pth文件，然后再读入其文件。</p>
+<p><code>check=torch.load('srcnn_x2.pth')</code></p>
 <p>用print函数看看里面包含了那些部分</p>
 <p><code>print(check.keys())</code></p>
 <p><img src="\assets\BlogPic\Pytorch推理相关1.png"></p>
 <p>可以看到，.pth读进来的字典中存储的是每一层值的结构参数。既然已经成功读取了模型参数文件，下一步要做的就是创建模型对象，将参数导入模型</p>
 <p><code>model=SRCNN()</code></p>
 <p><code>model.load_state_dict(check)</code></p>
-<p><code>print(&#39;模型加载成功&#39;)</code></p>
+<p><code>print('模型加载成功')</code></p>
 <p>运行后终端窗口显示模型加载成功，说明参数已经成功导入模型，可以正常进行推理了</p>
-<h3 id="2-pth-tar-文件"><a href="#2-pth-tar-文件" class="headerlink" title="2. .pth.tar 文件"></a>2. .pth.tar 文件</h3><p>同样，首先先保证自己的路径中存在后缀为.pth.tar的对应模型文件，再进行读入</p>
+<h3 id="pth.tar-文件">2. .pth.tar 文件</h3>
+<p>同样，首先先保证自己的路径中存在后缀为.pth.tar的对应模型文件，再进行读入</p>
 <p><code>check=torch.load(mbv3_small.pth.tar)</code></p>
 <p>同样也通过print函数打印读入的字典，看看其结构是否与.pth文件不同</p>
 <p><code>print(check.keys())</code></p>
 <p><img src="\assets\BlogPic\Pytorch推理相关2.png"></p>
 <p>可以看到，此时check字典中存的不再是网络中层模型的参数值，他储存的是整个训练网络的信息，例如<code>epoch</code>，<code>best_pre</code>,<code>optimizer</code>等等，模型参数实际上存储在<code>state_dict</code>中，我们可以对<code>state_dict</code>键值进行进一步打印</p>
-<p><code>print(check[&#39;state_dic&#39;].keys())</code></p>
+<p><code>print(check['state_dic'].keys())</code></p>
 <p><img src=\assets\BlogPic\Pytorch推理相关3.png></p>
 <p>可以看到，<code>state_dic</code>中存储的是.pth文件中的内容，所以<code>.pth.tar</code>文件可以看作是<code>.pth</code>文件的扩展，最后再进行模型的读入即可</p>
 <p><code>model=args.model</code></p>
 <p>因为有些网络是用cuda训练的，所以创建时需要使用<code>nn.DataParallel()</code>函数配合<code>.cuda()</code>将模型转化为cuda形</p>
-<p><code>model=nn.DataParallel(model).cuda()</code><br><code>model.load_state_dict(check[&#39;state_dict&#39;])</code></p>
+<p><code>model=nn.DataParallel(model).cuda()</code>
+<code>model.load_state_dict(check['state_dict'])</code></p>
 <p>最后终端显示模型加载成功，即模型参数导入完毕</p>
 
     </article>
@@ -692,7 +695,8 @@
                 <div class="toc-catalog">
                     <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
                 </div>
-                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pytorch-%E6%8E%A8%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">pytorch 推理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pytorch-%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E6%8E%A8%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">pytorch 读取文件推理的两个关键函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-pth%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. .pth文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-pth-tar-%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. .pth.tar 文件</span></a></li></ol></li></ol></li></ol>
+                <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pytorch-%E6%8E%A8%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">pytorch 推理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#pytorch-%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%E6%8E%A8%E7%90%86%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%85%B3%E9%94%AE%E5%87%BD%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">pytorch
+读取文件推理的两个关键函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#pth%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. .pth文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pth.tar-%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. .pth.tar 文件</span></a></li></ol></li></ol></li></ol>
             </div>
         
         <!-- sidebar -->
@@ -811,7 +815,14 @@
         
         
         
+        
+        
+        
+        
+        
     
+        
+        
         
         
         
@@ -962,7 +973,7 @@
     
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 21
+        Total : 22
         </div>
         <!-- search  -->
         
@@ -976,6 +987,12 @@
             <div class="archive-year"> 2022 </div>
             <ul class="year-list">
             
+        
+        <li class="archive-post-item">
+            <span class="archive-post-date">06/01</span>
+            <a class="archive-post-title" href="/2022/06/9e697457/">有关专利</a>
+        </li>
+    
         
         <li class="archive-post-item">
             <span class="archive-post-date">05/24</span>
